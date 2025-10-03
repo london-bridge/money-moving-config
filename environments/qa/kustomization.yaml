@@ -5,7 +5,6 @@ namespace: money-moving
 
 resources:
   - ../../base
-  - qa-manual-secret.yaml
 
 labels:
   - pairs:
@@ -32,8 +31,8 @@ patches:
       name: money-moving-shared-secret
     patch: |-
       - op: replace
-        path: /metadata/name
-        value: money-moving-shared-secret-disabled
+        path: /spec/dataFrom/0/extract/key
+        value: /money-moving/qa/manual-secrets
   - target:
       kind: Deployment
       name: ledger
