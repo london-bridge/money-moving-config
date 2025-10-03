@@ -11,18 +11,21 @@ namePrefix: stg-
 commonLabels:
   environment: staging
 
-configMapGenerator:
-  - name: money-moving-shared-config
-    behavior: merge
-    literals:
-      - ENVIRONMENT=staging
-      - LOG_LEVEL=info
-
 images:
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: stg-latest
 
 patches:
+  - target:
+      kind: ConfigMap
+      name: money-moving-shared-config
+    patch: |-
+      - op: replace
+        path: /data/ENVIRONMENT
+        value: staging
+      - op: replace
+        path: /data/LOG_LEVEL
+        value: info
   - target:
       kind: ExternalSecret
       name: money-moving-shared-secret

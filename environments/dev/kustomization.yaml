@@ -11,18 +11,21 @@ namePrefix: dev-
 commonLabels:
   environment: dev
 
-configMapGenerator:
-  - name: money-moving-shared-config
-    behavior: merge
-    literals:
-      - ENVIRONMENT=dev
-      - LOG_LEVEL=debug
-
 images:
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: main-latest
 
 patches:
+  - target:
+      kind: ConfigMap
+      name: money-moving-shared-config
+    patch: |-
+      - op: replace
+        path: /data/ENVIRONMENT
+        value: dev
+      - op: replace
+        path: /data/LOG_LEVEL
+        value: debug
   - target:
       kind: ExternalSecret
       name: money-moving-shared-secret

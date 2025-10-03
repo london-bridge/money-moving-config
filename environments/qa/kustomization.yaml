@@ -11,18 +11,21 @@ namePrefix: qa-
 commonLabels:
   environment: qa
 
-configMapGenerator:
-  - name: money-moving-shared-config
-    behavior: merge
-    literals:
-      - ENVIRONMENT=qa
-      - LOG_LEVEL=info
-
 images:
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: qa-latest
 
 patches:
+  - target:
+      kind: ConfigMap
+      name: money-moving-shared-config
+    patch: |-
+      - op: replace
+        path: /data/ENVIRONMENT
+        value: qa
+      - op: replace
+        path: /data/LOG_LEVEL
+        value: info
   - target:
       kind: ExternalSecret
       name: money-moving-shared-secret
