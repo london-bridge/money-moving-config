@@ -5,6 +5,7 @@ namespace: money-moving
 
 resources:
   - ../../base
+  - shared-external-secret.yaml
 
 labels:
   - pairs:

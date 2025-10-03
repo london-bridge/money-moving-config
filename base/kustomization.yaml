@@ -5,7 +5,6 @@ namespace: money-moving
 
 resources:
   - shared-configmap.yaml
-  - shared-external-secret.yaml
   - ghcr-secret.yaml
   - ledger-deployment.yaml
   - ledger-service.yaml
