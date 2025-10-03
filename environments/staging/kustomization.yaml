@@ -6,10 +6,10 @@ namespace: money-moving
 resources:
   - ../../base
 
-namePrefix: stg-
-
-commonLabels:
-  environment: staging
+labels:
+  - pairs:
+      environment: staging
+    includeSelectors: true
 
 images:
   - name: ghcr.io/london-bridge/money-moving/ledger
