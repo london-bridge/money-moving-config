@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: money-moving-staging
+  namespace: argocd
+spec:
+  project: money-moving-production
+  source:
+    repoURL: https://github.com/london-bridge/money-moving-config
+    targetRevision: main
+    path: environments/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: money-moving
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+  revisionHistoryLimit: 10

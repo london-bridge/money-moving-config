@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: money-moving
+
+resources:
+  - ../../base
+
+namePrefix: qa-
+
+commonLabels:
+  environment: qa
+
+configMapGenerator:
+  - name: money-moving-shared-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=qa
+      - LOG_LEVEL=info
+
+images:
+  - name: ghcr.io/london-bridge/money-moving/ledger
+    newTag: qa-latest
+
+patches:
+  - target:
+      kind: ExternalSecret
+      name: money-moving-shared-secret
+    patch: |-
+      - op: replace
+        path: /spec/dataFrom/0/extract/key
+        value: /money-moving/qa/manual-secrets
+  - target:
+      kind: Deployment
+      name: ledger
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 100m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 300Mi

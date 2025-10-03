@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: money-moving
+
+resources:
+  - ../../base
+
+namePrefix: stg-
+
+commonLabels:
+  environment: staging
+
+configMapGenerator:
+  - name: money-moving-shared-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=staging
+      - LOG_LEVEL=info
+
+images:
+  - name: ghcr.io/london-bridge/money-moving/ledger
+    newTag: stg-latest
+
+patches:
+  - target:
+      kind: ExternalSecret
+      name: money-moving-shared-secret
+    patch: |-
+      - op: replace
+        path: /spec/dataFrom/0/extract/key
+        value: /money-moving/staging/manual-secrets
+  - target:
+      kind: Deployment
+      name: ledger
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 200m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 512Mi

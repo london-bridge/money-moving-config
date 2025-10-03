@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: money-moving
+
+resources:
+  - shared-configmap.yaml
+  - shared-external-secret.yaml
+  - ghcr-secret.yaml
+  - ledger-deployment.yaml
+  - ledger-service.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: money-moving
