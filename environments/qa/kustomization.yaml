@@ -14,7 +14,7 @@ labels:
 
 images:
   - name: ghcr.io/london-bridge/money-moving/ledger
-    newTag: qa-latest
+    newTag: main-78dcc25946c6fda42e06477432f64bafae3261ee
 
 patches:
   - target:
