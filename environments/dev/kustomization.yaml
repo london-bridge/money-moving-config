@@ -41,6 +41,9 @@ patches:
         path: /spec/replicas
         value: 1
       - op: replace
+        path: /spec/template/spec/imagePullSecrets/0/name
+        value: regcred
+      - op: replace
         path: /spec/template/spec/containers/0/resources/requests/cpu
         value: 50m
       - op: replace
