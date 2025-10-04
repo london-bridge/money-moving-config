@@ -11,8 +11,9 @@ data:
   # PostgreSQL Configuration (ledger-v2)
   DB_HOST: "postgresql.development.svc.cluster.local"
   DB_PORT: "5432"
-  DB_NAME: "ledger_v2"
-  DB_USER: "ledger"
+  DB_NAME: "dev"
+  DB_USER: "postgres"
+  DB_PASSWORD: "postgres"
   DB_SSLMODE: "disable"  # Dev usa disable, staging/prod usa require
 
   # TigerBeetle Configuration (ledger-v2)
