@@ -50,6 +50,8 @@ spec:
                   name: money-moving-shared-config
                   key: SERVICE_NAME
           envFrom:
+            - configMapRef:
+                name: money-moving-shared-config
             - secretRef:
                 name: money-moving-shared-secret
           resources:
