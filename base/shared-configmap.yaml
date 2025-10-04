@@ -7,3 +7,14 @@ data:
   LOG_LEVEL: "info"
   ENVIRONMENT: "dev"
   SERVICE_NAME: "money-moving"
+
+  # PostgreSQL Configuration (ledger-v2)
+  DB_HOST: "postgresql.development.svc.cluster.local"
+  DB_PORT: "5432"
+  DB_NAME: "ledger_v2"
+  DB_USER: "ledger"
+  DB_SSLMODE: "disable"  # Dev usa disable, staging/prod usa require
+
+  # TigerBeetle Configuration (ledger-v2)
+  TIGERBEETLE_ADDRESSES: "tigerbeetle.default.svc.cluster.local:3000"
+  TIGERBEETLE_CLUSTER_ID: "0"
