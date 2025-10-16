@@ -16,7 +16,7 @@ images:
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: main-ba5e1eaf
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
-    newTag: main-c682f098
+    newTag: main-842365fa
 
 patches:
   - target:
