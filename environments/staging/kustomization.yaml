@@ -14,6 +14,8 @@ labels:
 images:
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: stg-latest
+  - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
+    newTag: stg-latest
 
 patches:
   - target:
@@ -40,6 +42,19 @@ patches:
       - op: replace
         path: /spec/replicas
         value: 2
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 200m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 512Mi
+  - target:
+      kind: Deployment
+      name: ledger-backoffice
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/cpu
         value: 200m

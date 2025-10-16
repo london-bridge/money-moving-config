@@ -8,6 +8,8 @@ resources:
   - ghcr-secret.yaml
   - ledger-deployment.yaml
   - ledger-service.yaml
+  - ledger-backoffice-deployment.yaml
+  - ledger-backoffice-service.yaml
 
 commonLabels:
   app.kubernetes.io/part-of: money-moving

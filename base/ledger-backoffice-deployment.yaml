@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ledger-backoffice
+  namespace: money-moving
+  labels:
+    app: ledger-backoffice
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ledger-backoffice
+  template:
+    metadata:
+      labels:
+        app: ledger-backoffice
+        version: v1
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: ledger-backoffice
+          image: ghcr.io/london-bridge/money-moving/ledger-backoffice:latest
+          ports:
+            - name: http
+              containerPort: 3001
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "3001"
+            - name: HOSTNAME
+              value: "0.0.0.0"
+            - name: NODE_ENV
+              value: "production"
+            - name: NEXT_TELEMETRY_DISABLED
+              value: "1"
+            - name: LEDGER_GRPC_HOST
+              value: "ledger.money-moving.svc.cluster.local"
+            - name: LEDGER_GRPC_PORT
+              value: "50051"
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: money-moving-shared-config
+                  key: LOG_LEVEL
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: money-moving-shared-config
+                  key: ENVIRONMENT
+          envFrom:
+            - configMapRef:
+                name: money-moving-shared-config
+            - secretRef:
+                name: money-moving-shared-secret
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3001
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
