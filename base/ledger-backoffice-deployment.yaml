@@ -35,10 +35,8 @@ spec:
               value: "production"
             - name: NEXT_TELEMETRY_DISABLED
               value: "1"
-            - name: LEDGER_GRPC_HOST
-              value: "ledger.money-moving.svc.cluster.local"
-            - name: LEDGER_GRPC_PORT
-              value: "50051"
+            - name: API_URL
+              value: "ledger.money-moving.svc.cluster.local:50051"
             - name: LOG_LEVEL
               valueFrom:
                 configMapKeyRef:
