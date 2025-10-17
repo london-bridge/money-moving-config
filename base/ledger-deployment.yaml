@@ -23,15 +23,10 @@ spec:
         - name: ledger
           image: ghcr.io/london-bridge/money-moving/ledger:latest
           ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
             - name: grpc
               containerPort: 50051
               protocol: TCP
           env:
-            - name: PORT
-              value: "8080"
             - name: GRPC_PORT
               value: "50051"
             - name: LOG_LEVEL
@@ -62,17 +57,15 @@ spec:
               cpu: 500m
               memory: 512Mi
           livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
+            grpc:
+              port: 50051
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
-            httpGet:
-              path: /ready
-              port: 8080
+            grpc:
+              port: 50051
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 3
