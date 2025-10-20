@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ledger-backoffice-internal
+  namespace: money-moving
+  labels:
+    app: ledger-backoffice
+spec:
+  ingressClassName: internal-nginx
+  rules:
+  - host: ledger-backoffice.lan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ledger-backoffice
+            port:
+              number: 3001
