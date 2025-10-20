@@ -5,10 +5,14 @@ metadata:
   namespace: money-moving
   labels:
     app: ledger-backoffice
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "10.8.0.0/24,10.0.0.0/16"
 spec:
   ingressClassName: internal-nginx
   rules:
-  - host: ledger-backoffice.lan
+  - host: ledger-backoffice.londonbridge.dev
     http:
       paths:
       - path: /
