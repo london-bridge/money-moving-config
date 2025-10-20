@@ -14,15 +14,19 @@ money-moving-config/
 ├── base/                     # Base Kubernetes manifests
 │   ├── kustomization.yaml
 │   ├── shared-configmap.yaml
-│   ├── shared-external-secret.yaml
 │   ├── ghcr-secret.yaml
 │   ├── ledger-deployment.yaml
-│   └── ledger-service.yaml
+│   ├── ledger-service.yaml
+│   ├── ledger-backoffice-deployment.yaml
+│   ├── ledger-backoffice-service.yaml
+│   └── ledger-backoffice-ingress.yaml  # HTTPS with Let's Encrypt
 └── environments/             # Environment-specific overlays
     ├── dev/
-    │   └── kustomization.yaml
+    │   ├── kustomization.yaml
+    │   └── shared-external-secret.yaml
     ├── qa/
-    │   └── kustomization.yaml
+    │   ├── kustomization.yaml
+    │   └── shared-secret.yaml
     └── staging/
         └── kustomization.yaml
 ```
@@ -32,11 +36,17 @@ money-moving-config/
 ### Applications
 
 - **ledger**: Ledger v2 service (TigerBeetle-based accounting)
+  - gRPC API (50051)
+  - HTTP REST API (8080)
+
+- **ledger-backoffice**: Web UI for ledger management
+  - Next.js application (3001)
+  - Public access: https://ledger-backoffice.londonbridge.dev
+  - Internal-only (VPN required)
 
 All applications:
 - Deploy to namespace: `money-moving`
 - Use shared ConfigMap and ExternalSecret
-- Expose HTTP (8080) and gRPC (50051) ports
 - Pull images from GHCR: `ghcr.io/london-bridge/money-moving/`
 
 ### Environments
@@ -296,6 +306,77 @@ kubectl rollout undo deployment/dev-ledger -n money-moving
 - `GET /api/v1/accounts/:id` - Get account details
 
 **Documentation**: See [money-moving repository](https://github.com/london-bridge/money-moving/tree/main/apps/ledger-v2/_docs)
+
+### Ledger Backoffice
+
+**Technology Stack**:
+- Next.js 15 (React)
+- TypeScript
+- Tailwind CSS
+- gRPC client (connects to Ledger v2)
+
+**Access**:
+- **URL**: https://ledger-backoffice.londonbridge.dev
+- **Requirements**: VPN connection required (DEV environment)
+- **Authentication**: Internal access only (IP whitelist: VPN + VPC)
+
+**Features**:
+- Account management UI
+- Transfer history visualization
+- Real-time balance tracking
+- Transaction search and filters
+
+**No Configuration Needed**:
+- ✅ DNS configured automatically via Route53
+- ✅ HTTPS with Let's Encrypt certificate
+- ✅ No port-forward required
+- ✅ Zero setup for developers
+
+**Troubleshooting**:
+
+If you cannot access the backoffice:
+
+1. **Verify VPN connection**:
+   ```bash
+   # You should be on 10.8.0.0/24 network
+   ip addr show tun0
+   ```
+
+2. **Check DNS resolution**:
+   ```bash
+   nslookup ledger-backoffice.londonbridge.dev
+   # Should resolve to internal ELB
+   ```
+
+3. **Clear DNS cache** (if DNS not resolving):
+   ```bash
+   sudo systemctl restart systemd-resolved
+   ```
+
+4. **Test direct access**:
+   ```bash
+   curl -I https://ledger-backoffice.londonbridge.dev
+   # Should return HTTP/2 200
+   ```
+
+5. **Check certificate**:
+   ```bash
+   kubectl get certificate ledger-backoffice-tls-secret -n money-moving
+   # Should show READY = True
+   ```
+
+**Architecture**:
+```
+Browser (VPN)
+    ↓ HTTPS
+Internal Load Balancer (internal-nginx)
+    ↓ HTTP
+ledger-backoffice Service (ClusterIP:3001)
+    ↓ gRPC
+ledger Service (ClusterIP:50051)
+    ↓
+TigerBeetle Cluster
+```
 
 ## 🤝 Contributing
 
