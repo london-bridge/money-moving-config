@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ledger-config
+  labels:
+    app.kubernetes.io/name: ledger
+    app.kubernetes.io/part-of: money-moving
+data:
+  # PostgreSQL Configuration
+  DB_HOST: "postgresql.development.svc.cluster.local"
+  DB_PORT: "5432"
+  DB_NAME: "ledger"
+  DB_USER: "ledger"
+  DB_SSLMODE: "disable"
+
+  # TigerBeetle Configuration
+  TIGERBEETLE_ADDRESSES: "10.0.4.216:3000"
+  TIGERBEETLE_CLUSTER_ID: "0"
+
+  # Pulsar Configuration
+  PULSAR_URL: "pulsar://pulsar-broker.pulsar.svc.cluster.local:6650"
+
+  # gRPC Configuration
+  GRPC_PORT: "50051"
+
+  # Application Configuration
+  LOG_LEVEL: "debug"
+  ENVIRONMENT: "dev"
+  SERVICE_NAME: "ledger"
