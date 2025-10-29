@@ -7,6 +7,14 @@ resources:
   - shared-configmap.yaml
   - ledger-configmap.yaml
   - ghcr-secret.yaml
+  - payment-deployment.yaml
+  - payment-service.yaml
+  - manager-deployment.yaml
+  - manager-service.yaml
+  - seamless-deployment.yaml
+  - seamless-service.yaml
+  - seamless-pix-deployment.yaml
+  - seamless-pix-service.yaml
   - ledger-deployment.yaml
   - ledger-service.yaml
   - ledger-backoffice-deployment.yaml

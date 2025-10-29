@@ -1,0 +1,86 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: manager
+  labels:
+    app: manager
+    app.kubernetes.io/name: manager
+spec:
+  selector:
+    matchLabels:
+      app: manager
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: manager
+    spec:
+      containers:
+        - name: manager
+          image: ghcr.io/london-bridge/money-moving/manager:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: STORAGE_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  name: money-moving-shared-config
+                  key: STORAGE_DRIVER
+            - name: STORAGE_POSTGRES_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: STORAGE_POSTGRES_CONNECTION_STRING
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: money-moving-shared-config
+                  key: REDIS_URL
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: REDIS_PASSWORD
+            - name: KAFKA_SASL_MECHANISM
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: KAFKA_SASL_MECHANISM
+            - name: KAFKA_USERNAME
+              value: admin
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: KAFKA_PASSWORD
+            - name: KAFKA_SCHEMA_REGISTRY_URL
+              value: http://redpanda.streaming.svc.cluster.local:8081
+            - name: KAFKA_BROKERS_URL
+              value: redpanda-0.redpanda.streaming.svc.cluster.local:9093,redpanda-1.redpanda.streaming.svc.cluster.local:9093,redpanda-2.redpanda.streaming.svc.cluster.local:9093
+            - name: KONG_URL
+              value: http://kong-kong-admin.kong-seamless.svc.cluster.local:8001
+            - name: MANAGER_RPC_SERVER_ADDRESS
+              value: '50052'
+            - name: PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving.tls-secret
+                  key: MANAGER_WEBHOOK_CERT_PRIVATE_KEY
+          ports:
+            - containerPort: 8081
+              name: http
+            - containerPort: 50052
+              name: rpc
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+      imagePullSecrets:
+        - name: regcred

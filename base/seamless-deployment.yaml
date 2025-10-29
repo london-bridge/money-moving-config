@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seamless
+  labels:
+    app: seamless
+    app.kubernetes.io/name: seamless
+spec:
+  selector:
+    matchLabels:
+      app: seamless
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: seamless
+    spec:
+      containers:
+        - name: seamless
+          image: ghcr.io/london-bridge/money-moving/seamless:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: STORAGE_POSTGRES_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: STORAGE_POSTGRES_CONNECTION_STRING
+            - name: PAYMENT_URL
+              value: https://api.londonbridge.pro/mm/payment
+            - name: ORCHESTRATION_REPORTING_URL
+              value: https://api.londonbridge.pro/or/reporting
+            - name: KAFKA_SASL_MECHANISM
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: KAFKA_SASL_MECHANISM
+            - name: KAFKA_USERNAME
+              value: admin
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: KAFKA_PASSWORD
+            - name: KAFKA_SCHEMA_REGISTRY_URL
+              value: http://redpanda.streaming.svc.cluster.local:8081
+            - name: KAFKA_BROKERS_URL
+              value: redpanda-0.redpanda.streaming.svc.cluster.local:9093,redpanda-1.redpanda.streaming.svc.cluster.local:9093,redpanda-2.redpanda.streaming.svc.cluster.local:9093
+            - name: SEAMLESS_HTTP_PORT
+              value: '8081'
+          ports:
+            - containerPort: 8081
+              name: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+      imagePullSecrets:
+        - name: regcred

@@ -1,0 +1,154 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  labels:
+    app: payment
+    app.kubernetes.io/name: payment
+spec:
+  selector:
+    matchLabels:
+      app: payment
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+        - name: payment
+          image: ghcr.io/london-bridge/money-moving/payment:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_ENV
+              value: production
+            - name: STORAGE_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  name: money-moving-shared-config
+                  key: STORAGE_DRIVER
+            - name: STORAGE_POSTGRES_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: STORAGE_POSTGRES_CONNECTION_STRING
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: money-moving-shared-config
+                  key: REDIS_URL
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: REDIS_PASSWORD
+            - name: KAFKA_SASL_MECHANISM
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: KAFKA_SASL_MECHANISM
+            - name: KAFKA_USERNAME
+              value: admin
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: money-moving-shared-secret
+                  key: KAFKA_PASSWORD
+            - name: KAFKA_SCHEMA_REGISTRY_URL
+              value: http://redpanda.streaming.svc.cluster.local:8081
+            - name: KAFKA_BROKERS_URL
+              value: redpanda-0.redpanda.streaming.svc.cluster.local:9093,redpanda-1.redpanda.streaming.svc.cluster.local:9093,redpanda-2.redpanda.streaming.svc.cluster.local:9093
+            - name: OCTOPUS_URL
+              value: https://api.londonbridge.pro/or/octopus
+            - name: PAYMENT_HTTP_PORT
+              value: '8081'
+            - name: TEMPORAL_SERVER_ADDRESS
+              value: temporal-frontend.temporal.svc.cluster.local:7233
+            - name: TEMPORAL_PAYMENT_NAMESPACE
+              value: default
+            - name: TEMPORAL_PAYMENT_PIX_IN_TASK_QUEUE
+              value: PAYMENT_PIX_IN_QUEUE
+            - name: TEMPORAL_ORCHESTRATION_PIX_IN_TASK_QUEUE
+              value: TQ_PIXIN
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: money-moving-shared-config
+                  key: LOG_LEVEL
+            - name: ORCHESTRATION_BACKEND_TYPE
+              value: combined
+            - name: PULSAR_URL
+              value: pulsar://pulsar-broker.pulsar.svc.cluster.local:6650
+            - name: PULSAR_CONN_OPER_TIMEOUT
+              value: '30'
+            - name: PULSAR_TOPIC_CREATE_BATCH_CHARGE
+              value: persistent://lb-core/cob/create-batch-cobv
+            - name: PULSAR_TOPIC_UPDATE_BATCH_CHARGE
+              value: persistent://lb-core/cob/update-batch-cobv
+            - name: PULSAR_CONSUMER_PIX_IN_TOPIC
+              value: persistent://lb-core/pix/pix-in
+            - name: PULSAR_CONSUMER_PIX_IN_ENDED
+              value: persistent://lb-core/pix/pix-in-ended
+            - name: PULSAR_CONSUMER_PIX_IN_SENT
+              value: persistent://lb-core/pix/pix-in-sent
+            - name: WORKFLOW_PIX_IN_NAME
+              value: WW_OCT_PIX_IN
+            - name: WORKFLOW_PIX_IN_VERSION
+              value: 1.0.1
+            - name: PAYMENT_CONSUMER_PIX_IN_ENDED
+              value: PAYMENT_CONSUMER_PIX_IN_ENDED
+            - name: PIX_IN_ENDED_DLQ
+              value: persistent://lb-core/pix/pix-in-ended-dlq
+            - name: PIX_IN_ENDED_DLQ_PUBLISHER_NAME
+              value: pix-in-ended-dlq-publisher
+            - name: MAX_DELIVERIES_TO_DLQ
+              value: '3'
+            - name: PAYMENT_RPC_SERVER_ADDRESS
+              value: '50051'
+            - name: CONNECTOR_DICT_URL
+              value: http://dict-new.connector-dict.svc.cluster.local:8080
+            - name: TEMPORAL_PIX_TRANSACTION_NAMESPACE
+              value: default
+            - name: CIPHER_SVC_URL
+              value: cipher-api.dev-infra.svc.cluster.local:50051
+            - name: MANAGER_RPC_SERVER_ADDRESS
+              value: money-moving-manager.money-moving.svc.cluster.local:50052
+            - name: QRCODE_VALIDATOR_URL
+              value: http://dev-pix-validator-backend.commons.svc.cluster.local:8080
+            - name: SEAMLESS_BASE_URL
+              value: https://seamless.londonbridge.pro
+          ports:
+            - containerPort: 8081
+              name: http
+            - containerPort: 50051
+              name: rpc
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+      imagePullSecrets:
+        - name: regcred

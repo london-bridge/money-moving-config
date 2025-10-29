@@ -13,10 +13,18 @@ labels:
     includeSelectors: true
 
 images:
+  - name: ghcr.io/london-bridge/money-moving/payment
+    newTag: latest
+  - name: ghcr.io/london-bridge/money-moving/manager
+    newTag: latest
+  - name: ghcr.io/london-bridge/money-moving/seamless
+    newTag: latest
+  - name: ghcr.io/london-bridge/money-moving/seamless-pix
+    newTag: latest
   - name: ghcr.io/london-bridge/money-moving/ledger
-    newTag: main-d8c9a727
+    newTag: latest
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
-    newTag: main-c682f098
+    newTag: latest
 
 patches:
   - target:
@@ -29,6 +37,34 @@ patches:
       - op: replace
         path: /data/LOG_LEVEL
         value: info
+  - target:
+      kind: Deployment
+      name: payment
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
+      name: manager
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
+      name: seamless
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
+      name: seamless-pix
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
   - target:
       kind: Deployment
       name: ledger

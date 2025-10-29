@@ -1,0 +1,75 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seamless-pix
+  labels:
+    app: seamless-pix
+    app.kubernetes.io/name: seamless-pix
+spec:
+  selector:
+    matchLabels:
+      app: seamless-pix
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: seamless-pix
+    spec:
+      containers:
+        - name: seamless-pix
+          image: ghcr.io/london-bridge/money-moving/seamless-pix:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: money-moving-shared-config
+                  key: ENVIRONMENT
+            - name: OPERATION_SERVICE_URL
+              value: operation-service.operation.svc.cluster.local:5050
+            - name: MONEY_MOVING_MANAGER_URL
+              value: money-moving-manager.money-moving.svc.cluster.local:8081
+            - name: ORCHESTRATION_PAYOUT_URL
+              value: orchestration-go-pix-out.orchestration-go.svc.cluster.local:50051
+            - name: OCTOPUS_URL
+              value: https://api.londonbridge.pro/or/octopus
+            - name: ORCHESTRATION_REPORTING_URL
+              value: https://api.londonbridge.pro/or/reporting
+            - name: SEAMLESS_PIX_COB_EXPIRATION
+              value: '3600'
+            - name: SEAMLESS_PIX_HTTP_PORT
+              value: '8081'
+            - name: GRPC_CHARGE_SERVICE_ADDRESS
+              value: orchestration-go-cob.orchestration-go.svc.cluster.local:50051
+            - name: ORCHESTRATION_COB_PAYLOAD_URL
+              value: orchestration-go-cob.orchestration-go.svc.cluster.local:50051
+            - name: PAYMENT_RPC_SERVER_ADDRESS
+              value: money-moving-payment.money-moving.svc.cluster.local:50051
+            - name: ORCHESTRATION_PIX_SERVICE_ADDRESS
+              value: orchestration-go-pix.orchestration-go.svc.cluster.local:50051
+          ports:
+            - containerPort: 8081
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+      imagePullSecrets:
+        - name: regcred

@@ -14,10 +14,18 @@ labels:
     includeSelectors: true
 
 images:
+  - name: ghcr.io/london-bridge/money-moving/payment
+    newTag: latest
+  - name: ghcr.io/london-bridge/money-moving/manager
+    newTag: latest
+  - name: ghcr.io/london-bridge/money-moving/seamless
+    newTag: latest
+  - name: ghcr.io/london-bridge/money-moving/seamless-pix
+    newTag: latest
   - name: ghcr.io/london-bridge/money-moving/ledger
-    newTag: main-0a27cd14
+    newTag: latest
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
-    newTag: main-4b932c5d
+    newTag: latest
 
 patches:
   - target:
@@ -37,6 +45,46 @@ patches:
       - op: replace
         path: /spec/dataFrom/0/extract/key
         value: /money-moving/dev/manual-secrets
+  - target:
+      kind: Deployment
+      name: payment
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets/0/name
+        value: regcred
+  - target:
+      kind: Deployment
+      name: manager
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets/0/name
+        value: regcred
+  - target:
+      kind: Deployment
+      name: seamless
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets/0/name
+        value: regcred
+  - target:
+      kind: Deployment
+      name: seamless-pix
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets/0/name
+        value: regcred
   - target:
       kind: Deployment
       name: ledger
