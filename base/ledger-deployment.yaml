@@ -26,29 +26,11 @@ spec:
             - name: grpc
               containerPort: 50051
               protocol: TCP
-          env:
-            - name: GRPC_PORT
-              value: "50051"
-            - name: LOG_LEVEL
-              valueFrom:
-                configMapKeyRef:
-                  name: money-moving-shared-config
-                  key: LOG_LEVEL
-            - name: ENVIRONMENT
-              valueFrom:
-                configMapKeyRef:
-                  name: money-moving-shared-config
-                  key: ENVIRONMENT
-            - name: SERVICE_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: money-moving-shared-config
-                  key: SERVICE_NAME
           envFrom:
             - configMapRef:
-                name: money-moving-shared-config
+                name: ledger-config
             - secretRef:
-                name: money-moving-shared-secret
+                name: ledger-secret
           resources:
             requests:
               cpu: 50m
