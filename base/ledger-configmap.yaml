@@ -24,6 +24,9 @@ data:
   REDIS_URL: "redis-master.development.svc.cluster.local:6379"
   REDIS_TLS: "false"
 
+  # Temporal Configuration
+  TEMPORAL_HOST: "temporal-frontend.temporal.svc.cluster.local:7233"
+
   # gRPC Configuration
   GRPC_PORT: "50051"
 
