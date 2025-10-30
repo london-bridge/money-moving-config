@@ -26,6 +26,9 @@ spec:
             - name: grpc
               containerPort: 50051
               protocol: TCP
+            - name: http
+              containerPort: 8080
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: ledger-config
@@ -39,15 +42,17 @@ spec:
               cpu: 500m
               memory: 512Mi
           livenessProbe:
-            grpc:
-              port: 50051
+            httpGet:
+              path: /_hello
+              port: 8080
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
-            grpc:
-              port: 50051
+            httpGet:
+              path: /_hello
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 3
