@@ -290,3 +290,10 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
         value: 512Mi
+  # Patch global para trocar ghcr-secret por regcred em todos os deployments
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets/0/name
+        value: regcred
