@@ -27,3 +27,8 @@ data:
   LOG_LEVEL: "debug"
   ENVIRONMENT: "dev"
   SERVICE_NAME: "ledger"
+
+  # Temporal Configuration
+  TEMPORAL_SERVER_ADDRESS: "temporal-frontend.temporal.svc.cluster.local:7233"
+  TEMPORAL_LEDGER_NAMESPACE: "default"
+  TEMPORAL_LEDGER_TASK_QUEUE: "ledger-task-queue"
