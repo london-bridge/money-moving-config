@@ -13,17 +13,17 @@ labels:
 
 images:
   - name: ghcr.io/london-bridge/money-moving/payment
-    newTag: "186498e8"
+    newTag: "620da5f6"
   - name: ghcr.io/london-bridge/money-moving/manager
     newTag: "186498e8"
   - name: ghcr.io/london-bridge/money-moving/seamless
-    newTag: "186498e8"
+    newTag: latest
   - name: ghcr.io/london-bridge/money-moving/seamless-pix
-    newTag: "186498e8"
+    newTag: latest
   - name: ghcr.io/london-bridge/money-moving/ledger
-    newTag: "186498e8"
+    newTag: "6c04a7f5"
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
-    newTag: "186498e8"
+    newTag: "6c04a7f5"
 
 patches:
   - target:
