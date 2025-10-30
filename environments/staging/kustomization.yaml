@@ -12,14 +12,14 @@ labels:
     includeSelectors: true
 
 images:
-  - name: ghcr.io/london-bridge/money-moving/payment
-    newTag: "stg-latest"
-  - name: ghcr.io/london-bridge/money-moving/manager
-    newTag: "stg-latest"
-  - name: ghcr.io/london-bridge/money-moving/seamless
-    newTag: "stg-latest"
-  - name: ghcr.io/london-bridge/money-moving/seamless-pix
-    newTag: "stg-latest"
+  - name: ghcr.io/london-bridge/money-moving-payment
+    newTag: "0e4b91ec"
+  - name: ghcr.io/london-bridge/money-moving-manager
+    newTag: "0e4b91ec"
+  - name: ghcr.io/london-bridge/money-moving-seamless
+    newTag: "0e4b91ec"
+  - name: ghcr.io/london-bridge/money-moving-seamless-pix
+    newTag: "0e4b91ec"
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: "main-0a27cd14"
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
