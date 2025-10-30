@@ -48,7 +48,7 @@ patches:
     patch: |-
       - op: replace
         path: /data/DB_HOST
-        value: postgresql.stg-infra.svc.cluster.local
+        value: lb-bank-stg-postgresdb.cx6gcqmccuiu.sa-east-1.rds.amazonaws.com
       - op: replace
         path: /data/DB_NAME
         value: ledger
