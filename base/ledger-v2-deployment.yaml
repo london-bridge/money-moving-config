@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ledger-v2
+  namespace: money-moving
+  labels:
+    app: ledger-v2
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ledger-v2
+  template:
+    metadata:
+      labels:
+        app: ledger-v2
+        version: v2
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: ledger-v2
+          image: ghcr.io/london-bridge/money-moving/ledger-v2:latest
+          ports:
+            - name: grpc
+              containerPort: 50051
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: ledger-v2-config
+            - secretRef:
+                name: ledger-secret
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          livenessProbe:
+            grpc:
+              port: 50051
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            grpc:
+              port: 50051
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3

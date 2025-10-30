@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ledger-v2
+  namespace: money-moving
+  labels:
+    app: ledger-v2
+    app.kubernetes.io/name: ledger-v2
+    app.kubernetes.io/part-of: money-moving
+spec:
+  type: ClusterIP
+  ports:
+    - name: grpc
+      port: 50051
+      targetPort: grpc
+      protocol: TCP
+  selector:
+    app: ledger-v2
