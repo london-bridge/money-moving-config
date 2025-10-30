@@ -57,6 +57,19 @@ patches:
         path: /spec/dataFrom/0/extract/key
         value: /money-moving/qa/manual-secrets
   - target:
+      kind: ConfigMap
+      name: ledger-config
+    patch: |-
+      - op: replace
+        path: /data/DB_HOST
+        value: postgres.qa-infra.svc.cluster.local
+      - op: replace
+        path: /data/ENVIRONMENT
+        value: qa
+      - op: replace
+        path: /data/LOG_LEVEL
+        value: info
+  - target:
       kind: Deployment
       name: payment
     patch: |-
