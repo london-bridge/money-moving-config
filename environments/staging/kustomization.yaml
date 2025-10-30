@@ -15,11 +15,11 @@ images:
   - name: ghcr.io/london-bridge/money-moving-payment
     newTag: "0e4b91ec"
   - name: ghcr.io/london-bridge/money-moving-manager
-    newTag: "0e4b91ec"
+    newTag: "cc1176d4"
   - name: ghcr.io/london-bridge/money-moving-seamless
-    newTag: "0e4b91ec"
+    newTag: "5bd30489"
   - name: ghcr.io/london-bridge/money-moving-seamless-pix
-    newTag: "0e4b91ec"
+    newTag: "f5feb746"
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: "main-0a27cd14"
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
