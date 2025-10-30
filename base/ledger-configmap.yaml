@@ -21,7 +21,7 @@ data:
   PULSAR_URL: "pulsar://pulsar-broker.pulsar.svc.cluster.local:6650"
 
   # Redis Configuration
-  REDIS_URL: "redis-master.money-moving.svc.cluster.local:6379"
+  REDIS_URL: "redis-master.development.svc.cluster.local:6379"
   REDIS_TLS: "false"
 
   # gRPC Configuration
