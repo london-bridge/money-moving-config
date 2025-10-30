@@ -25,3 +25,4 @@ resources:
 
 commonLabels:
   app.kubernetes.io/part-of: money-moving
+- rds-ca-cert-configmap.yaml
