@@ -24,6 +24,11 @@ spec:
         - name: seamless-pix
           image: ghcr.io/london-bridge/money-moving-seamless-pix:latest
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: money-moving-shared-config
+            - secretRef:
+                name: money-moving-shared-secret
           env:
             - name: ENVIRONMENT
               valueFrom:
