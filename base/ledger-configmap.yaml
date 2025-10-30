@@ -25,7 +25,7 @@ data:
   REDIS_TLS: "false"
 
   # Temporal Configuration
-  TEMPORAL_HOST: "temporal-frontend.temporal.svc.cluster.local:7233"
+  TEMPORAL_SERVER_ADDRESS: "temporal-frontend.temporal.svc.cluster.local:7233"
 
   # gRPC Configuration
   GRPC_PORT: "50051"
