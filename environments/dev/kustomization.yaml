@@ -15,7 +15,7 @@ labels:
 
 images:
   - name: ghcr.io/london-bridge/money-moving/payment
-    newTag: latest
+    newTag: "620da5f6"
   - name: ghcr.io/london-bridge/money-moving/manager
     newTag: latest
   - name: ghcr.io/london-bridge/money-moving/seamless
