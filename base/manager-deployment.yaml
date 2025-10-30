@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: manager
-          image: ghcr.io/london-bridge/money-moving/manager:latest
+          image: ghcr.io/london-bridge/money-moving-manager:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: STORAGE_DRIVER

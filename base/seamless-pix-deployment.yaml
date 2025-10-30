@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: seamless-pix
-          image: ghcr.io/london-bridge/money-moving/seamless-pix:latest
+          image: ghcr.io/london-bridge/money-moving-seamless-pix:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: ENVIRONMENT

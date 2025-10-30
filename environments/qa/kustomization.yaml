@@ -12,18 +12,24 @@ labels:
     includeSelectors: true
 
 images:
-  - name: ghcr.io/london-bridge/money-moving/payment
-    newTag: "620da5f6"
-  - name: ghcr.io/london-bridge/money-moving/manager
-    newTag: "186498e8"
-  - name: ghcr.io/london-bridge/money-moving/seamless
+  # Serviços antigos: repositórios sem / (money-moving-service)
+  - name: ghcr.io/london-bridge/money-moving-payment
+    newName: ghcr.io/london-bridge/money-moving-payment
     newTag: latest
-  - name: ghcr.io/london-bridge/money-moving/seamless-pix
+  - name: ghcr.io/london-bridge/money-moving-manager
+    newName: ghcr.io/london-bridge/money-moving-manager
     newTag: latest
+  - name: ghcr.io/london-bridge/money-moving-seamless
+    newName: ghcr.io/london-bridge/money-moving-seamless
+    newTag: latest
+  - name: ghcr.io/london-bridge/money-moving-seamless-pix
+    newName: ghcr.io/london-bridge/money-moving-seamless-pix
+    newTag: latest
+  # Serviços novos: repositórios com / (money-moving/service)
   - name: ghcr.io/london-bridge/money-moving/ledger
-    newTag: "6c04a7f5"
+    newTag: "main-0a27cd14"
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
-    newTag: "6c04a7f5"
+    newTag: "main-4b932c5d"
 
 patches:
   - target:
