@@ -33,6 +33,7 @@ data:
 
   # gRPC Configuration
   GRPC_PORT: "50051"
+  LEDGER_RPC_SERVER_ADDRESS: ":50051"
 
   # Application Configuration
   LOG_LEVEL: "debug"
