@@ -6,6 +6,9 @@ namespace: money-moving
 resources:
   - ../../base
 
+patchesStrategicMerge:
+  - manager-patch.yaml
+
 labels:
   - pairs:
       environment: staging
@@ -36,6 +39,70 @@ patches:
       - op: replace
         path: /data/LOG_LEVEL
         value: info
+      - op: replace
+        path: /data/REDIS_URL
+        value: redis-master.stg-infra.svc.cluster.local:6379
+  - target:
+      kind: ConfigMap
+      name: ledger-config
+    patch: |-
+      - op: replace
+        path: /data/DB_HOST
+        value: postgresql.stg-infra.svc.cluster.local
+      - op: replace
+        path: /data/DB_NAME
+        value: ledger
+      - op: replace
+        path: /data/DB_USER
+        value: ledger
+      - op: replace
+        path: /data/DB_SSLMODE
+        value: require
+      - op: replace
+        path: /data/REDIS_URL
+        value: redis-master.stg-infra.svc.cluster.local:6379
+      - op: replace
+        path: /data/REDIS_TLS
+        value: "true"
+      - op: replace
+        path: /data/TEMPORAL_SERVER_ADDRESS
+        value: temporal-frontend.stg-infra-temporal.svc.cluster.local:7233
+      - op: replace
+        path: /data/KAFKA_ENABLED
+        value: "true"
+      - op: replace
+        path: /data/KAFKA_BROKERS_URL
+        value: redpanda.stg-infra.svc.cluster.local:9092
+      - op: add
+        path: /data/STORAGE_DRIVER
+        value: postgres
+      - op: add
+        path: /data/KAFKA_SCHEMA_REGISTRY_URL
+        value: http://redpanda.stg-infra.svc.cluster.local:8081
+      - op: add
+        path: /data/KAFKA_SASL_MECHANISM
+        value: SCRAM-SHA-256
+      - op: add
+        path: /data/KAFKA_TLS_ENABLED
+        value: "false"
+      - op: add
+        path: /data/KAFKA_SASL_ENABLED
+        value: "true"
+      - op: add
+        path: /data/TEMPORAL_LEDGER_NAMESPACE
+        value: ledger-stg
+      - op: add
+        path: /data/TEMPORAL_LEDGER_TASK_QUEUE
+        value: ledger-task-queue-stg
+      - op: add
+        path: /data/LEDGER_HTTP_PORT
+        value: "8080"
+      - op: add
+        path: /data/LEDGER_RPC_SERVER_ADDRESS
+        value: ":50051"
+      - op: add
+        path: /data/APP_ENV
+        value: staging
   - target:
       kind: ExternalSecret
       name: shared-secret
@@ -57,6 +124,56 @@ patches:
       - op: replace
         path: /spec/replicas
         value: 2
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: APP_ENV
+          value: staging
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: OCTOPUS_URL
+          value: https://api.lbpay.io/or/octopus
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: CIPHER_SVC_URL
+          value: http://cipher-api.stg-infra.svc.cluster.local:80
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: MANAGER_RPC_SERVER_ADDRESS
+          value: manager.money-moving.svc.cluster.local:50052
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: QRCODE_VALIDATOR_URL
+          value: http://stg-pix-validator-backend.commons.svc.cluster.local:8080
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: SEAMLESS_BASE_URL
+          value: https://seamless.lbpay.io
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: CONNECTOR_DICT_URL
+          value: http://dict-new.connector-dict.svc.cluster.local:8080
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: KAFKA_SCHEMA_REGISTRY_URL
+          value: http://redpanda.stg-infra.svc.cluster.local:8081
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: KAFKA_BROKERS_URL
+          value: redpanda.stg-infra.svc.cluster.local:9092
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: TEMPORAL_SERVER_ADDRESS
+          value: temporal-frontend.stg-infra-temporal.svc.cluster.local:7233
   - target:
       kind: Deployment
       name: manager
@@ -64,6 +181,75 @@ patches:
       - op: replace
         path: /spec/replicas
         value: 2
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: PULSAR_URL
+          valueFrom:
+            secretKeyRef:
+              name: money-moving-shared-secret
+              key: PULSAR_URL
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: PULSAR_WEB_URL
+          valueFrom:
+            secretKeyRef:
+              name: money-moving-shared-secret
+              key: PULSAR_WEB_URL
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: STREAMNATIVE_API_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: money-moving-shared-secret
+              key: STREAMNATIVE_API_KEY_ID
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: STREAMNATIVE_API_KEY_NAME
+          valueFrom:
+            secretKeyRef:
+              name: money-moving-shared-secret
+              key: STREAMNATIVE_API_KEY_NAME
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: STREAMNATIVE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: money-moving-shared-secret
+              key: STREAMNATIVE_API_KEY
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: PULSAR_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: money-moving-shared-secret
+              key: PULSAR_TOKEN
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: PULSAR_AUTH_PLUGIN
+          valueFrom:
+            secretKeyRef:
+              name: money-moving-shared-secret
+              key: PULSAR_AUTH_PLUGIN
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: PULSAR_AUTH_PARAMS
+          valueFrom:
+            secretKeyRef:
+              name: money-moving-shared-secret
+              key: PULSAR_AUTH_PARAMS
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: PULSAR_CONN_OPER_TIMEOUT
+          value: "30"
   - target:
       kind: Deployment
       name: seamless
