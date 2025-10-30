@@ -23,7 +23,7 @@ images:
   - name: ghcr.io/london-bridge/money-moving/seamless-pix
     newTag: latest
   - name: ghcr.io/london-bridge/money-moving/ledger
-    newTag: "0e5c271d"
+    newTag: "186498e8"
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
     newTag: "0e5c271d"
 
