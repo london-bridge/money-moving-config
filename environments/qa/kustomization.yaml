@@ -5,7 +5,6 @@ namespace: money-moving
 
 resources:
   - ../../base
-  - shared-secret.yaml
 
 labels:
   - pairs:
@@ -37,6 +36,20 @@ patches:
       - op: replace
         path: /data/LOG_LEVEL
         value: info
+  - target:
+      kind: ExternalSecret
+      name: shared-secret
+    patch: |-
+      - op: replace
+        path: /spec/dataFrom/0/extract/key
+        value: /money-moving/qa/manual-secrets
+  - target:
+      kind: ExternalSecret
+      name: ledger-secret
+    patch: |-
+      - op: replace
+        path: /spec/dataFrom/0/extract/key
+        value: /money-moving/qa/manual-secrets
   - target:
       kind: Deployment
       name: payment

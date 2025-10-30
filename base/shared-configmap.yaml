@@ -7,6 +7,10 @@ data:
   LOG_LEVEL: "info"
   ENVIRONMENT: "dev"
   SERVICE_NAME: "money-moving"
+  STORAGE_DRIVER: "postgres"
+
+  # Redis Configuration
+  REDIS_URL: "redis.qa-infra.svc.cluster.local:6379"
 
   # PostgreSQL Configuration (ledger-v2)
   DB_HOST: "postgresql.development.svc.cluster.local"
