@@ -9,7 +9,7 @@ data:
   # PostgreSQL Configuration (Read Model + Metadata)
   DB_HOST: "postgresql.development.svc.cluster.local"
   DB_PORT: "5432"
-  DB_NAME: "ledger_v2"
+  DB_NAME: "ledger"
   DB_USER: "ledger"
   DB_SSLMODE: "disable"
 
