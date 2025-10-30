@@ -22,7 +22,7 @@ resources:
   - ledger-backoffice-deployment.yaml
   - ledger-backoffice-service.yaml
   - ledger-backoffice-ingress.yaml
+  - rds-ca-cert-configmap.yaml
 
 commonLabels:
   app.kubernetes.io/part-of: money-moving
-- rds-ca-cert-configmap.yaml
