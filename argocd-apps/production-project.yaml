@@ -20,3 +20,5 @@ spec:
       kind: '*'
     - group: 'external-secrets.io'
       kind: '*'
+    - group: 'networking.k8s.io'
+      kind: '*'
