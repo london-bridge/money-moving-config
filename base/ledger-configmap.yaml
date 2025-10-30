@@ -27,6 +27,9 @@ data:
   # Temporal Configuration
   TEMPORAL_SERVER_ADDRESS: "temporal-frontend.temporal.svc.cluster.local:7233"
 
+  # Kafka Configuration (disabled in DEV - using Pulsar instead)
+  KAFKA_ENABLED: "false"
+
   # gRPC Configuration
   GRPC_PORT: "50051"
 
