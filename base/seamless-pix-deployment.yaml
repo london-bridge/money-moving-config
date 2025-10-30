@@ -57,6 +57,8 @@ spec:
               value: money-moving-payment.money-moving.svc.cluster.local:50051
             - name: ORCHESTRATION_PIX_SERVICE_ADDRESS
               value: orchestration-go-pix.orchestration-go.svc.cluster.local:50051
+            - name: ORCHESTRATION_RPC_SERVER_ADDRESS
+              value: orchestration-go-pix-in.orchestration-go.svc.cluster.local:8080
           ports:
             - containerPort: 8081
               name: http
