@@ -99,6 +99,9 @@ patches:
       - op: replace
         path: /data/LOG_LEVEL
         value: info
+      - op: replace
+        path: /data/TIGERBEETLE_ADDRESSES
+        value: tigerbeetle.default.svc.cluster.local:3000
   - target:
       kind: Deployment
       name: payment
