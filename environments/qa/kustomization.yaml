@@ -76,6 +76,10 @@ patches:
       - op: replace
         path: /data/LOG_LEVEL
         value: info
+      - op: remove
+        path: /data/TIGERBEETLE_ADDRESSES
+      - op: remove
+        path: /data/TIGERBEETLE_CLUSTER_ID
   - target:
       kind: ConfigMap
       name: ledger-v2-config
