@@ -81,6 +81,12 @@ patches:
       - op: replace
         path: /data/REDIS_URL
         value: redis.qa-infra.svc.cluster.local:6379
+      - op: replace
+        path: /data/TEMPORAL_SERVER_ADDRESS
+        value: temporal.qa-infra.svc.cluster.local:7233
+      - op: replace
+        path: /data/PULSAR_URL
+        value: pulsar://pulsar.qa-infra.svc.cluster.local:6650
   - target:
       kind: ConfigMap
       name: ledger-v2-config
@@ -103,6 +109,9 @@ patches:
       - op: replace
         path: /data/TIGERBEETLE_ADDRESSES
         value: 10.1.13.66:3000
+      - op: replace
+        path: /data/PULSAR_URL
+        value: pulsar://pulsar.qa-infra.svc.cluster.local:6650
   - target:
       kind: Deployment
       name: payment
