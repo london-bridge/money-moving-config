@@ -51,10 +51,10 @@ patches:
         value: lb-bank-stg-postgresdb.cx6gcqmccuiu.sa-east-1.rds.amazonaws.com
       - op: replace
         path: /data/DB_NAME
-        value: ledger
+        value: appdb
       - op: replace
         path: /data/DB_USER
-        value: ledger
+        value: postgres_user
       - op: replace
         path: /data/DB_SSLMODE
         value: require
