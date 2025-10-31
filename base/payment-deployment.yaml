@@ -117,7 +117,7 @@ spec:
             - name: CIPHER_SVC_URL
               value: cipher-api.dev-infra.svc.cluster.local:50051
             - name: MANAGER_RPC_SERVER_ADDRESS
-              value: money-moving-manager.money-moving.svc.cluster.local:50052
+              value: manager.money-moving.svc.cluster.local:50052
             - name: QRCODE_VALIDATOR_URL
               value: http://dev-pix-validator-backend.commons.svc.cluster.local:8080
             - name: SEAMLESS_BASE_URL
