@@ -1,0 +1,4 @@
+# CODEOWNERS - Define code ownership for pull request reviews
+# Toda alteração neste repositório requer aprovação de pelo menos 1 membro do devops-team
+
+* @london-bridge/devops-team
