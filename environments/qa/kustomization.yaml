@@ -78,6 +78,9 @@ patches:
       - op: replace
         path: /data/LOG_LEVEL
         value: info
+      - op: replace
+        path: /data/REDIS_URL
+        value: redis.qa-infra.svc.cluster.local:6379
   - target:
       kind: ConfigMap
       name: ledger-v2-config
