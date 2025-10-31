@@ -23,6 +23,8 @@ images:
     newTag: latest
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: "ff21fb26"
+  - name: ghcr.io/london-bridge/money-moving/ledger-v2
+    newTag: "19a89847"
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
     newTag: "19a89847"
 
@@ -110,6 +112,22 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/memory
         value: 200Mi
+  - target:
+      kind: Deployment
+      name: ledger-v2
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/imagePullSecrets/0/name
+        value: regcred
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 100m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 256Mi
   - target:
       kind: Deployment
       name: ledger-backoffice
