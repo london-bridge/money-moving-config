@@ -13,10 +13,6 @@ data:
   DB_USER: "ledger"
   DB_SSLMODE: "disable"
 
-  # TigerBeetle Configuration
-  TIGERBEETLE_ADDRESSES: "10.0.4.216:3000"
-  TIGERBEETLE_CLUSTER_ID: "0"
-
   # Pulsar Configuration
   PULSAR_URL: "pulsar://pulsar-broker.pulsar.svc.cluster.local:6650"
 
