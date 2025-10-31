@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: payment
-          image: ghcr.io/london-bridge/money-moving-payment:latest
+          image: ghcr.io/london-bridge/money-moving-payment:14ce1d70
           imagePullPolicy: IfNotPresent
           env:
             - name: APP_ENV
