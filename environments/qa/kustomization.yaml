@@ -5,6 +5,7 @@ namespace: money-moving
 
 resources:
   - ../../base
+  - shared-external-secret.yaml
 
 labels:
   - pairs:
@@ -44,7 +45,7 @@ patches:
         value: info
   - target:
       kind: ExternalSecret
-      name: shared-secret
+      name: money-moving-shared-secret
     patch: |-
       - op: replace
         path: /spec/dataFrom/0/extract/key
