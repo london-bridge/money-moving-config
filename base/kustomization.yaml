@@ -7,8 +7,6 @@ resources:
   - shared-configmap.yaml
   - ledger-configmap.yaml
   - ledger-v2-configmap.yaml
-  - shared-external-secret.yaml
-  - ghcr-external-secret.yaml
   - ledger-external-secret.yaml
   - payment-deployment.yaml
   - payment-service.yaml
