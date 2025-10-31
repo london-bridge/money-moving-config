@@ -18,7 +18,7 @@ spec:
         version: v2
     spec:
       imagePullSecrets:
-        - name: ghcr-secret
+        - name: regcred
       containers:
         - name: ledger
           image: ghcr.io/london-bridge/money-moving/ledger:latest
