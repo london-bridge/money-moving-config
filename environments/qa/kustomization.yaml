@@ -28,6 +28,8 @@ images:
     newTag: latest
   # Serviços novos: repositórios com / (money-moving/service)
   - name: ghcr.io/london-bridge/money-moving/ledger
+    newTag: "ff21fb26"
+  - name: ghcr.io/london-bridge/money-moving/ledger-v2
     newTag: "main-0a27cd14"
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
     newTag: "main-4b932c5d"
@@ -97,7 +99,7 @@ patches:
         value: info
       - op: replace
         path: /data/TIGERBEETLE_ADDRESSES
-        value: tigerbeetle.default.svc.cluster.local:3000
+        value: 10.1.13.66:3000
   - target:
       kind: Deployment
       name: payment
