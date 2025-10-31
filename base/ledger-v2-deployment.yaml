@@ -18,10 +18,10 @@ spec:
         version: v2
     spec:
       imagePullSecrets:
-        - name: ghcr-secret
+        - name: regcred
       containers:
         - name: ledger-v2
-          image: ghcr.io/london-bridge/money-moving/ledger-v2:latest
+          image: ghcr.io/london-bridge/money-moving/ledger-v2:main-latest
           ports:
             - name: grpc
               containerPort: 50051
