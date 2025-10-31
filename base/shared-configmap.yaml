@@ -13,7 +13,7 @@ data:
   REDIS_URL: "redis.qa-infra.svc.cluster.local:6379"
 
   # PostgreSQL Configuration (ledger-v2)
-  DB_HOST: "postgresql.development.svc.cluster.local"
+  DB_HOST: "postgresql.staging.svc.cluster.local"
   DB_PORT: "5432"
   DB_NAME: "dev"
   DB_USER: "postgres"
