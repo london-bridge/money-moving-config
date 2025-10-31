@@ -126,6 +126,12 @@ patches:
       - op: replace
         path: /spec/ingressClassName
         value: nginx
+      - op: replace
+        path: /spec/rules/0/host
+        value: ledger-backoffice.qa.lbpay.com.br
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: ledger-backoffice.qa.lbpay.com.br
   - target:
       kind: Deployment
       name: manager
