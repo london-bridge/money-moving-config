@@ -120,6 +120,13 @@ patches:
         path: /spec/replicas
         value: 1
   - target:
+      kind: Ingress
+      name: ledger-backoffice-internal
+    patch: |-
+      - op: replace
+        path: /spec/ingressClassName
+        value: nginx
+  - target:
       kind: Deployment
       name: manager
     patch: |-
