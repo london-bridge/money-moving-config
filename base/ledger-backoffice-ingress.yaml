@@ -14,10 +14,10 @@ spec:
   ingressClassName: internal-nginx
   tls:
   - hosts:
-    - ledger-backoffice.londonbridge.dev
+    - ledger-backoffice.dev.lbpay.com.br
     secretName: ledger-backoffice-tls-secret
   rules:
-  - host: ledger-backoffice.londonbridge.dev
+  - host: ledger-backoffice.dev.lbpay.com.br
     http:
       paths:
       - path: /
