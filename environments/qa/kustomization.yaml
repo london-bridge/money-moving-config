@@ -77,6 +77,25 @@ patches:
         path: /data/LOG_LEVEL
         value: info
   - target:
+      kind: ConfigMap
+      name: ledger-v2-config
+    patch: |-
+      - op: replace
+        path: /data/DB_HOST
+        value: postgres.qa-infra.svc.cluster.local
+      - op: replace
+        path: /data/DB_NAME
+        value: qa
+      - op: replace
+        path: /data/DB_USER
+        value: postgres
+      - op: replace
+        path: /data/ENVIRONMENT
+        value: qa
+      - op: replace
+        path: /data/LOG_LEVEL
+        value: info
+  - target:
       kind: Deployment
       name: payment
     patch: |-
