@@ -10,7 +10,7 @@ resources:
 labels:
   - pairs:
       environment: dev
-    includeSelectors: true
+    includeSelectors: false
 
 images:
   - name: ghcr.io/london-bridge/money-moving/payment
