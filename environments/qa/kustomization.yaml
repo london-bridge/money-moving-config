@@ -30,7 +30,7 @@ images:
   - name: ghcr.io/london-bridge/money-moving/ledger
     newTag: "ff21fb26"
   - name: ghcr.io/london-bridge/money-moving/ledger-v2
-    newTag: "main-0a27cd14"
+    newTag: "main-latest"
   - name: ghcr.io/london-bridge/money-moving/ledger-backoffice
     newTag: "main-4b932c5d"
 
